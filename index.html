@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notivibe - Radar Internacional de Tecnologia e IA</title>
+    <style>
+        :root {
+            --bg: #0b0e17;
+            --card-bg: #151926;
+            --txt: #ffffff;
+            --mut: #a0a6c0;
+            --ac: #5b7cff;
+            --ac2: #8f5bff;
+            --tg-color: #229ED9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--txt);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 16px;
+        }
+
+        /* HEADER / TOPO */
+        .topo {
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 1px solid #1f2438;
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .topo span {
+            color: var(--ac);
+        }
+
+        /* HERO / BANNER PRINCIPAL FUTURISTA */
+        .hero {
+            position: relative;
+            margin: 24px 0;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 16px;
+            overflow: hidden;
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid #232a4d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(19, 23, 56, 0.88), rgba(34, 21, 69, 0.92));
+            mix-blend-mode: multiply;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            margin: 0 0 12px;
+            font-size: clamp(1.5rem, 3.8vw, 2.2rem);
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            margin: 0 auto;
+            max-width: 780px;
+            color: #d8deff;
+            line-height: 1.6;
+            font-size: 1rem;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.8);
+        }
+
+        /* TÍTULOS DE SEÇÃO */
+        .sec {
+            margin: 32px 0 20px;
+            padding: 12px 18px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 0.3px;
+            background: #15192b;
+            border-radius: 8px;
+            border-left: 4px solid var(--ac);
+        }
+
+        /* GRID DE CARDS (4 COLUNAS) */
+        .grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media(max-width: 1024px) {
+            .grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media(max-width: 768px) {
+            .grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media(max-width: 480px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        /* CARD EDITORIAL */
+        .card {
+            position: relative;
+            aspect-ratio: 4 / 5;
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: var(--card-bg);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(91, 124, 255, 0.25);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.25) 0%,
+                rgba(0, 0, 0, 0.15) 35%,
+                rgba(0, 0, 0, 0.85) 75%,
+                rgba(0, 0, 0, 0.98) 100%
+            );
+            z-index: 1;
+        }
+
+        .card-header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .card-brand {
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            color: #ffffff;
+            opacity: 0.9;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .card-brand span {
+            color: var(--ac);
+        }
+
+        .card-body {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-tag {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 800;
+            line-height: 1.35;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer-line {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.25);
+            margin-top: 4px;
+        }
+
+        .card-source {
+            font-size: 0.78rem;
+            color: #d0d5eb;
+            font-weight: 500;
+        }
+
+        /* TELA DA MATÉRIA INTERNA */
+        #pagina-materia {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .btn-voltar {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #151926;
+            color: #8da4ff;
+            border: 1px solid #232a4d;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            margin-bottom: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-voltar:hover {
+            background: var(--ac);
+            color: #ffffff;
+            border-color: var(--ac);
+        }
+
+        .article-header {
+            margin-bottom: 24px;
+        }
+
+        .article-tag {
+            display: inline-block;
+            background: rgba(91, 124, 255, 0.2);
+            color: var(--ac);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            border: 1px solid rgba(91, 124, 255, 0.3);
+        }
+
+        .article-title {
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            font-weight: 800;
+            line-height: 1.3;
+            margin: 0 0 12px 0;
+            color: #ffffff;
+        }
+
+        .article-source-info {
+            font-size: 0.88rem;
+            color: var(--mut);
+            font-weight: 500;
+        }
+
+        .article-cover {
+            width: 100%;
+            max-height: 480px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 28px;
+            border: 1px solid #232a4d;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #d8deff;
+            max-width: 860px;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+        }
+
+        /* SEÇÃO TELEGRAM FLUIDA */
+        .tg-section {
+            margin: 60px 0 40px;
+            padding: 30px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            background: transparent;
+        }
+
+        @media(max-width: 768px) {
+            .tg-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+        }
+
+        .tg-icon-wrap {
+            flex-shrink: 0;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .tg-icon-wrap svg {
+            width: 90px;
+            height: 90px;
+            fill: var(--tg-color);
+            filter: drop-shadow(0 10px 20px rgba(34, 158, 217, 0.35));
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .tg-text {
+            max-width: 680px;
+        }
+
+        .tg-text h2 {
+            margin: 0 0 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .tg-text p {
+            margin: 0 0 20px;
+            color: #b0b8db;
+            line-height: 1.6;
+            font-size: 0.98rem;
+        }
+
+        .tg-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #229ED9, #1b85b8);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.95rem;
+            box-shadow: 0 6px 20px rgba(34, 158, 217, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .tg-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 158, 217, 0.5);
+            background: linear-gradient(135deg, #2ab3f5, #229ED9);
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 40px;
+            padding: 30px 16px;
+            text-align: center;
+            background: #070911;
+            color: var(--mut);
+            line-height: 1.7;
+            font-size: 0.85rem;
+            border-top: 1px solid #151926;
+        }
+
+        footer a.wpp {
+            display: inline-block;
+            margin: 16px 0 8px;
+            background: #171f38;
+            color: #8da4ff;
+            border: 1px solid #283663;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.82rem;
+            transition: 0.3s ease;
+        }
+
+        footer a.wpp:hover {
+            background: var(--ac);
+            color: #ffffff;
+            border-color: var(--ac);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topo wrap" onclick="fecharMateria()">Noti<span>vibe</span></div>
+
+    <div class="wrap">
+        <div id="pagina-home">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>O impacto da tecnologia no mercado de trabalho e no seu cotidiano.</h1>
+                    <p>Radar de notícias internacionais consolidadas dos últimos 3 dias. Acompanhe as inovações em IA e tecnologia dos EUA e Europa traduzidas e explicadas de forma direta.</p>
+                </div>
+            </section>
+
+            <div class="sec">Tech nos Negócios (Internacional)</div>
+            <div class="grid" id="neg"></div>
+
+            <div class="sec">Tech no Cotidiano (Internacional)</div>
+            <div class="grid" id="cot"></div>
+        </div>
+
+        <div id="pagina-materia">
+            <button class="btn-voltar" onclick="fecharMateria()">← Voltar para as últimas notícias</button>
+            <div class="article-header">
+                <div class="article-tag" id="art-cat">Tech nos Negócios</div>
+                <h1 class="article-title" id="art-title">Título da Notícia</h1>
+                <div class="article-source-info">Fonte internacional original: <strong id="art-source">TechCrunch (EUA)</strong> (Traduzido e resumido por Notivibe)</div>
+            </div>
+            <img src="" id="art-img" class="article-cover" alt="Imagem da notícia">
+            <div class="article-content" id="art-body"></div>
+        </div>
+
+        <!-- LINK DO TELEGRAM OFICIAL -->
+        <section class="tg-section">
+            <div class="tg-icon-wrap">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.56 8.16l-2.02 9.52c-.15.68-.56.84-1.13.53l-3.1-2.29-1.5 1.44c-.17.17-.31.31-.63.31l.22-3.18 5.78-5.22c.25-.22-.05-.35-.39-.12l-7.14 4.5-3.08-.96c-.67-.21-.68-.67.14-.99l12.06-4.65c.56-.21 1.05.13.85.91z"/>
+                </svg>
+            </div>
+            <div class="tg-text">
+                <h2>Receba os alertas de IA e mercado no seu Telegram</h2>
+                <p>Não perca nenhuma inovação global que possa impactar sua carreira ou seu negócio. Receba furos internacionais e testes práticos de IA antes de todo mundo no nosso canal VIP.</p>
+                <a href="https://t.me/+hCZTY3orjoI3ZWMx" target="_blank" rel="noopener" class="tg-btn">
+                    Entrar no canal VIP da Notivibe
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div>Site criado por <strong>LetsGoDesign</strong> · © <span id="y"></span> Notivibe · Todos os direitos reservados.</div>
+        <div>As notícias são resumos traduzidos informativos de portais internacionais; leia sempre a fonte original.</div>
+        <br>
+        <a class="wpp" href="https://wa.me/5585987998372" target="_blank" rel="noopener">Fale com nosso suporte no WhatsApp</a>
+    </footer>
+
+    <script>
+        const bgFallback = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80";
+
+        // BASE DE DADOS COM AS NOTÍCIAS DOS ÚLTIMOS 3 DIAS (ATUALIZADA AUTOMATICAMENTE DE MADRUGADA)
+        let todasNoticias = [
+            {
+                id: 1,
+                dataPub: "2026-03-29", // Data dentro da janela dos últimos 3 dias
+                t: "Empresas nos EUA adotam agentes de IA para triagem corporativa",
+                f: "TechCrunch (EUA)",
+                cat: "Tech nos Negócios",
+                img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80",
+                texto: `<p>Avanços recentes no ecossistema de startups no Vale do Silício mostram uma guinada no uso de agentes autônomos de IA para a gestão de processos operacionais internos.</p>
+                        <p>Diferente de chatbots convencionais, essas novas ferramentas executam fluxos de trabalho completos, reduzindo custos operacionais em até 40% em departamentos financeiros e de atendimento.</p>
+                        <p><strong>Impacto nos Negócios:</strong> As posições corporativas passam a exigir cada vez mais habilidades de liderança e supervisão de automação, alterando a dinâmica do mercado de trabalho global.</p>`
+            },
+            {
+                id: 2,
+                dataPub: "2026-03-28",
+                t: "Microsoft lança diretrizes de orçamento para uso de IA em equipes",
+                f: "Wired (EUA)",
+                cat: "Tech nos Negócios",
+                img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+                texto: `<p>A Microsoft anunciou a implementação de métricas de eficiência no uso de inteligência artificial generativa dentro dos pacotes empresariais do Copilot.</p>
+                        <p>A medida responde à necessidade de grandes empresas de mensurar o retorno real sobre o investimento (ROI) feito na contratação de licenças de IA para seus funcionários.</p>
+                        <p><strong>Impacto nos Negócios:</strong> Gestores e profissionais de TI precisarão justificar o uso estratégico das ferramentas com base em ganho de tempo comprovado.</p>`
+            },
+            {
+                id: 3,
+                dataPub: "2026-03-28",
+                t: "Oracle expande nuvem focada no treinamento de modelos de IA",
+                f: "MIT Tech Review",
+                cat: "Tech nos Negócios",
+                img: bgFallback,
+                texto: `<p>A Oracle oficializou a ampliação de data centers de alta performance para processamento massivo de IA para clientes corporativos de médio porte.</p>
+                        <p>A novidade permite que empresas que não possuem infraestrutura milionária utilizem modelos de linguagem treinados com dados proprietários em ambiente seguro.</p>
+                        <p><strong>Impacto nos Negócios:</strong> Aceleração na transformação digital de médias empresas que antes ficavam atrás das grandes corporações.</p>`
+            },
+            {
+                id: 4,
+                dataPub: "2026-03-27",
+                t: "União Europeia avança com diretrizes para automação de trabalho",
+                f: "Financial Times",
+                cat: "Tech nos Negócios",
+                img: bgFallback,
+                texto: `<p>Reguladores europeus apresentaram um conjunto de boas práticas para garantir a requalificação de profissionais afetados pela automação por IA no setor de serviços.</p>
+                        <p>O foco principal é redirecionar colaboradores para funções de maior valor agregado dentro das próprias corporações.</p>
+                        <p><strong>Impacto nos Negócios:</strong> Tendência global de regulamentação do trabalho que deve servir de base para o mercado brasileiro em breve.</p>`
+            },
+            {
+                id: 5,
+                dataPub: "2026-03-29",
+                t: "Novos robôs domésticos aprendem tarefas complexas por visão",
+                f: "The Verge (EUA)",
+                cat: "Tech no Cotidiano",
+                img: "https://images.unsplash.com/photo-1543512214-318c7553f230?auto=format&fit=crop&w=600&q=80",
+                texto: `<p>Desenvolvedores na Califórnia demonstraram robôs de última geração capazes de aprender tarefas da casa por meio de observação de vídeos humanos, sem necessidade de programação manual.</p>
+                        <p>Os dispositivos conseguem manipular louças, organizar salas e dobrar roupas com taxa de precisão superior a 90%.</p>
+                        <p><strong>Impacto na Rotina:</strong> O futuro da automação pessoal caminha para libertar horas semanais da rotina doméstica das famílias.</p>`
+            },
+            {
+                id: 6,
+                dataPub: "2026-03-28",
+                t: "Assistentes de IA generativa chegam a aplicativos de mensagens",
+                f: "Ars Technica",
+                cat: "Tech no Cotidiano",
+                img: bgFallback,
+                texto: `<p>Grandes ecossistemas de tecnologia começaram a liberar a integração direta de assistentes inteligentes em aplicativos de conversa diária para gerenciamento de agenda pessoal.</p>
+                        <p>Com comandos simples de áudio ou texto, o assistente organiza compromissos, faz resumos de e-mails longos e sugere respostas rápidas.</p>
+                        <p><strong>Impacto na Rotina:</strong> Ganho direto de produtividade pessoal no uso do celular sem necessidade de aplicativos pagos adicionais.</p>`
+            },
+            {
+                id: 7,
+                dataPub: "2026-03-27",
+                t: "Smart TVs atualizam protocolos de privacidade e segurança",
+                f: "Wired (EUA)",
+                cat: "Tech no Cotidiano",
+                img: "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=600&q=80",
+                texto: `<p>Fabricantes mundiais de televisores inteligentes lançaram correções de sistema para bloquear tentativas de coleta indevida de dados por aplicativos de terceiros.</p>
+                        <p>A atualização garante maior proteção contra vazamento de informações de rede doméstica do usuário.</p>
+                        <p><strong>Impacto na Rotina:</strong> Ambientes residenciais conectados ficam mais seguros contra vulnerabilidades da internet.</p>`
+            },
+            {
+                id: 8,
+                dataPub: "2026-03-27",
+                t: "Ferramentas de IA para controle de tela avançam para famílias",
+                f: "The Verge (EUA)",
+                cat: "Tech no Cotidiano",
+                img: bgFallback,
+                texto: `<p>Plataformas de tecnologia apresentaram novos filtros inteligentes que analisam contextos de uso da internet por crianças em tempo real.</p>
+                        <p>A ferramenta avisa os pais sobre padrões de uso nocivos e excesso de exposição de tela de maneira preventiva e educativa.</p>
+                        <p><strong>Impacto na Rotina:</strong> Gestão familiar de tecnologia mais eficiente e tranquila para os pais.</p>`
+            }
+        ];
+
+        function limitarTexto(texto, limite = 60) {
+            return texto.length > limite ? texto.substring(0, limite - 3) + "..." : texto;
+        }
+
+        // FUNÇÃO QUE FILTRA APENAS NOTÍCIAS DOS ÚLTIMOS 3 DIAS
+        function filtrarUltimos3Dias(lista) {
+            const agora = new Date().getTime();
+            const limite3Dias = 3 * 24 * 60 * 60 * 1000; // 72 horas em milissegundos
+
+            return lista.filter(item => {
+                if (!item.dataPub) return true;
+                const dataItem = new Date(item.dataPub).getTime();
+                return (agora - dataItem) <= limite3Dias;
+            });
+        }
+
+        function renderCards() {
+            const negContainer = document.getElementById("neg");
+            const cotContainer = document.getElementById("cot");
+
+            // Aplica o filtro de até 3 dias antes de renderizar
+            const noticiasRecentes = filtrarUltimos3Dias(todasNoticias);
+
+            const negs = noticiasRecentes.filter(n => n.cat === "Tech nos Negócios");
+            const cots = noticiasRecentes.filter(n => n.cat === "Tech no Cotidiano");
+
+            negContainer.innerHTML = negs.map(n => `
+                <div class="card" onclick="abrirMateria(${n.id})" style="background-image: url('${n.img}');">
+                    <div class="card-header">
+                        <div class="card-brand">Noti<span>vibe</span></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-tag">${n.cat}</div>
+                        <h3>${limitarTexto(n.t, 60)}</h3>
+                        <div class="card-footer-line"></div>
+                        <div class="card-source">Fonte: ${n.f}</div>
+                    </div>
+                </div>
+            `).join("");
+
+            cotContainer.innerHTML = cots.map(n => `
+                <div class="card" onclick="abrirMateria(${n.id})" style="background-image: url('${n.img}');">
+                    <div class="card-header">
+                        <div class="card-brand">Noti<span>vibe</span></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-tag">${n.cat}</div>
+                        <h3>${limitarTexto(n.t, 60)}</h3>
+                        <div class="card-footer-line"></div>
+                        <div class="card-source">Fonte: ${n.f}</div>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function abrirMateria(id) {
+            const item = todasNoticias.find(n => n.id === id);
+            if (!item) return;
+
+            document.getElementById("art-cat").textContent = item.cat;
+            document.getElementById("art-title").textContent = item.t;
+            document.getElementById("art-source").textContent = item.f;
+            document.getElementById("art-img").src = item.img;
+            document.getElementById("art-body").innerHTML = item.texto;
+
+            document.getElementById("pagina-home").style.display = "none";
+            document.getElementById("pagina-materia").style.display = "block";
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function fecharMateria() {
+            document.getElementById("pagina-materia").style.display = "none";
+            document.getElementById("pagina-home").style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderCards();
+        document.getElementById("y").textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
