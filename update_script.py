@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 import urllib.parse
 import urllib.request
 
-# CONFIGURAÇÃO DE FEEDS INTERNACIONAIS
 FEEDS = {
     "Tech nos Negócios": "https://techcrunch.com/category/artificial-intelligence/feed/",
     "Tech no Cotidiano": "https://www.theverge.com/rss/index.xml"
@@ -26,6 +25,28 @@ def traduzir_texto(texto):
     except Exception:
         return texto
 
+def gerar_imagem_tematica(titulo, categoria):
+    # Identifica o conceito chave da notícia em inglês para buscar uma imagem conceitual
+    titulo_lower = titulo.lower()
+    
+    if any(k in titulo_lower for k in ["robot", "automation", "robô", "automação"]):
+        termo = "futuristic robotics technology"
+    elif any(k in titulo_lower for k in ["cloud", "data center", "server", "nuvem"]):
+        termo = "server data center technology"
+    elif any(k in titulo_lower for k in ["security", "privacy", "segurança", "privacidade"]):
+        termo = "cybersecurity digital network"
+    elif any(k in titulo_lower for k in ["tv", "screen", "display", "tela"]):
+        termo = "smart tv living room technology"
+    elif any(k in titulo_lower for k in ["app", "phone", "mobile", "celular"]):
+        termo = "modern smartphone user interface"
+    elif any(k in titulo_lower for k in ["ai", "copilot", "chatgpt", "model"]):
+        termo = "artificial intelligence neural network"
+    else:
+        termo = "modern technology business" if categoria == "Tech nos Negócios" else "digital lifestyle technology"
+
+    # Retorna uma imagem conceitual em alta definição (formato 600x750 ideal para os cards)
+    return f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" if not termo else f"https://source.unsplash.com/600x750/?{urllib.parse.quote(termo)}"
+
 def buscar_noticias():
     noticias = []
     id_counter = 1
@@ -40,7 +61,6 @@ def buscar_noticias():
             if itens_adicionados >= 4:
                 break
 
-            # Data de publicação
             dt_pub = datetime.now()
             if hasattr(entry, 'published_parsed') and entry.published_parsed:
                 dt_pub = datetime(*entry.published_parsed[:6])
@@ -50,6 +70,8 @@ def buscar_noticias():
                 resumo_limpo = limpar_html(getattr(entry, 'summary', getattr(entry, 'description', '')))
                 resumo_pt = traduzir_texto(resumo_limpo[:200])
 
+                # Gera uma foto temática totalmente nova baseada no conceito da notícia
+                imagem_tematica = gerar_imagem_tematica(entry.title, categoria)
                 fonte = "TechCrunch (EUA)" if categoria == "Tech nos Negócios" else "The Verge (EUA)"
                 
                 noticias.append({
@@ -58,7 +80,7 @@ def buscar_noticias():
                     "t": titulo_pt,
                     "f": fonte,
                     "cat": categoria,
-                    "img": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80",
+                    "img": imagem_tematica,
                     "texto": f"<p>{resumo_pt}</p><p><strong>Impacto:</strong> Atualização relevante dos últimos 3 dias no cenário global de inovação e inteligência artificial.</p>"
                 })
                 id_counter += 1
@@ -69,4 +91,4 @@ def buscar_noticias():
 if __name__ == "__main__":
     novas_noticias = buscar_noticias()
     if novas_noticias:
-        print(f"Sucesso! {len(novas_noticias)} notícias processadas.")
+        print(f"Sucesso! {len(novas_noticias)} notícias processadas com fotos temáticas conceituais.")
