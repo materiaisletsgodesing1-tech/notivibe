@@ -26,7 +26,6 @@ def traduzir_texto(texto):
         return texto
 
 def gerar_imagem_tematica(titulo, categoria):
-    # Identifica o conceito chave da notícia em inglês para buscar uma imagem conceitual
     titulo_lower = titulo.lower()
     
     if any(k in titulo_lower for k in ["robot", "automation", "robô", "automação"]):
@@ -44,8 +43,7 @@ def gerar_imagem_tematica(titulo, categoria):
     else:
         termo = "modern technology business" if categoria == "Tech nos Negócios" else "digital lifestyle technology"
 
-    # Retorna uma imagem conceitual em alta definição (formato 600x750 ideal para os cards)
-    return f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" if not termo else f"https://source.unsplash.com/600x750/?{urllib.parse.quote(termo)}"
+    return f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" if not termo else f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
 
 def buscar_noticias():
     noticias = []
@@ -70,7 +68,6 @@ def buscar_noticias():
                 resumo_limpo = limpar_html(getattr(entry, 'summary', getattr(entry, 'description', '')))
                 resumo_pt = traduzir_texto(resumo_limpo[:200])
 
-                # Gera uma foto temática totalmente nova baseada no conceito da notícia
                 imagem_tematica = gerar_imagem_tematica(entry.title, categoria)
                 fonte = "TechCrunch (EUA)" if categoria == "Tech nos Negócios" else "The Verge (EUA)"
                 
@@ -88,7 +85,26 @@ def buscar_noticias():
 
     return noticias
 
+def atualizar_html(noticias):
+    try:
+        with open("index.html", "r", encoding="utf-8") as f:
+            conteudo = f.read()
+
+        json_noticias = json.dumps(noticias, ensure_ascii=False, indent=2)
+        
+        # Substitui a variável JS 'noticiasData' ou 'NOTICIAS' dentro do index.html
+        padrao = r'(const noticiasData\s*=\s*\[[\s\S]*?\];|const NOTICIAS\s*=\s*\[[\s\S]*?\];|var noticiasData\s*=\s*\[[\s\S]*?\];)'
+        novo_conteudo = re.sub(padrao, f'const noticiasData = {json_noticias};', conteudo)
+
+        with open("index.html", "w", encoding="utf-8") as f:
+            f.write(novo_conteudo)
+
+        print("index.html atualizado com sucesso!")
+    except Exception as e:
+        print(f"Erro ao atualizar o HTML: {e}")
+
 if __name__ == "__main__":
     novas_noticias = buscar_noticias()
     if novas_noticias:
-        print(f"Sucesso! {len(novas_noticias)} notícias processadas com fotos temáticas conceituais.")
+        atualizar_html(novas_noticias)
+        print(f"Sucesso! {len(novas_noticias)} notícias injetadas no index.html.")
