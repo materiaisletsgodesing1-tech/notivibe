@@ -43,7 +43,7 @@ def gerar_imagem_tematica(titulo, categoria):
     else:
         termo = "modern technology business" if categoria == "Tech nos Negócios" else "digital lifestyle technology"
 
-    return f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" if not termo else f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
+    return f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
 
 def buscar_noticias():
     noticias = []
@@ -90,21 +90,25 @@ def atualizar_html(noticias):
         with open("index.html", "r", encoding="utf-8") as f:
             conteudo = f.read()
 
-        json_noticias = json.dumps(noticias, ensure_ascii=False, indent=2)
+        json_noticias = json.dumps(noticias, ensure_ascii=False, indent=4)
+        bloco_novo = f"// <!--INICIO_NOTICIAS-->\n        let todasNoticias = {json_noticias};\n        // <!--FIM_NOTICIAS-->"
+
+        # Substitui exatamente a variável todasNoticias entre os marcadores do index.html
+        padrao = r'// <!--INICIO_NOTICIAS-->[\s\S]*?// <!--FIM_NOTICIAS-->'
         
-        # Substitui a variável JS 'noticiasData' ou 'NOTICIAS' dentro do index.html
-        padrao = r'(const noticiasData\s*=\s*\[[\s\S]*?\];|const NOTICIAS\s*=\s*\[[\s\S]*?\];|var noticiasData\s*=\s*\[[\s\S]*?\];)'
-        novo_conteudo = re.sub(padrao, f'const noticiasData = {json_noticias};', conteudo)
+        if re.search(padrao, conteudo):
+            novo_conteudo = re.sub(padrao, bloco_novo, conteudo)
+            with open("index.html", "w", encoding="utf-8") as f:
+                f.write(novo_conteudo)
+            print("Notícias injetadas com sucesso em 'todasNoticias' no index.html!")
+        else:
+            print("Marcadores não encontrados no index.html.")
 
-        with open("index.html", "w", encoding="utf-8") as f:
-            f.write(novo_conteudo)
-
-        print("index.html atualizado com sucesso!")
     except Exception as e:
-        print(f"Erro ao atualizar o HTML: {e}")
+        print(f"Erro ao atualizar HTML: {e}")
 
 if __name__ == "__main__":
     novas_noticias = buscar_noticias()
     if novas_noticias:
         atualizar_html(novas_noticias)
-        print(f"Sucesso! {len(novas_noticias)} notícias injetadas no index.html.")
+        print(f"Sucesso! {len(novas_noticias)} notícias processadas.")
