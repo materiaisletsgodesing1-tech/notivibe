@@ -480,10 +480,11 @@
         const bgFallback = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80";
 
         // BASE DE DADOS COM AS NOTÍCIAS DOS ÚLTIMOS 3 DIAS (ATUALIZADA AUTOMATICAMENTE DE MADRUGADA)
+        // <!--INICIO_NOTICIAS-->
         let todasNoticias = [
             {
                 id: 1,
-                dataPub: "2026-03-29", // Data dentro da janela dos últimos 3 dias
+                dataPub: "2026-10-30",
                 t: "Empresas nos EUA adotam agentes de IA para triagem corporativa",
                 f: "TechCrunch (EUA)",
                 cat: "Tech nos Negócios",
@@ -491,85 +492,9 @@
                 texto: `<p>Avanços recentes no ecossistema de startups no Vale do Silício mostram uma guinada no uso de agentes autônomos de IA para a gestão de processos operacionais internos.</p>
                         <p>Diferente de chatbots convencionais, essas novas ferramentas executam fluxos de trabalho completos, reduzindo custos operacionais em até 40% em departamentos financeiros e de atendimento.</p>
                         <p><strong>Impacto nos Negócios:</strong> As posições corporativas passam a exigir cada vez mais habilidades de liderança e supervisão de automação, alterando a dinâmica do mercado de trabalho global.</p>`
-            },
-            {
-                id: 2,
-                dataPub: "2026-03-28",
-                t: "Microsoft lança diretrizes de orçamento para uso de IA em equipes",
-                f: "Wired (EUA)",
-                cat: "Tech nos Negócios",
-                img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
-                texto: `<p>A Microsoft anunciou a implementação de métricas de eficiência no uso de inteligência artificial generativa dentro dos pacotes empresariais do Copilot.</p>
-                        <p>A medida responde à necessidade de grandes empresas de mensurar o retorno real sobre o investimento (ROI) feito na contratação de licenças de IA para seus funcionários.</p>
-                        <p><strong>Impacto nos Negócios:</strong> Gestores e profissionais de TI precisarão justificar o uso estratégico das ferramentas com base em ganho de tempo comprovado.</p>`
-            },
-            {
-                id: 3,
-                dataPub: "2026-03-28",
-                t: "Oracle expande nuvem focada no treinamento de modelos de IA",
-                f: "MIT Tech Review",
-                cat: "Tech nos Negócios",
-                img: bgFallback,
-                texto: `<p>A Oracle oficializou a ampliação de data centers de alta performance para processamento massivo de IA para clientes corporativos de médio porte.</p>
-                        <p>A novidade permite que empresas que não possuem infraestrutura milionária utilizem modelos de linguagem treinados com dados proprietários em ambiente seguro.</p>
-                        <p><strong>Impacto nos Negócios:</strong> Aceleração na transformação digital de médias empresas que antes ficavam atrás das grandes corporações.</p>`
-            },
-            {
-                id: 4,
-                dataPub: "2026-03-27",
-                t: "União Europeia avança com diretrizes para automação de trabalho",
-                f: "Financial Times",
-                cat: "Tech nos Negócios",
-                img: bgFallback,
-                texto: `<p>Reguladores europeus apresentaram um conjunto de boas práticas para garantir a requalificação de profissionais afetados pela automação por IA no setor de serviços.</p>
-                        <p>O foco principal é redirecionar colaboradores para funções de maior valor agregado dentro das próprias corporações.</p>
-                        <p><strong>Impacto nos Negócios:</strong> Tendência global de regulamentação do trabalho que deve servir de base para o mercado brasileiro em breve.</p>`
-            },
-            {
-                id: 5,
-                dataPub: "2026-03-29",
-                t: "Novos robôs domésticos aprendem tarefas complexas por visão",
-                f: "The Verge (EUA)",
-                cat: "Tech no Cotidiano",
-                img: "https://images.unsplash.com/photo-1543512214-318c7553f230?auto=format&fit=crop&w=600&q=80",
-                texto: `<p>Desenvolvedores na Califórnia demonstraram robôs de última geração capazes de aprender tarefas da casa por meio de observação de vídeos humanos, sem necessidade de programação manual.</p>
-                        <p>Os dispositivos conseguem manipular louças, organizar salas e dobrar roupas com taxa de precisão superior a 90%.</p>
-                        <p><strong>Impacto na Rotina:</strong> O futuro da automação pessoal caminha para libertar horas semanais da rotina doméstica das famílias.</p>`
-            },
-            {
-                id: 6,
-                dataPub: "2026-03-28",
-                t: "Assistentes de IA generativa chegam a aplicativos de mensagens",
-                f: "Ars Technica",
-                cat: "Tech no Cotidiano",
-                img: bgFallback,
-                texto: `<p>Grandes ecossistemas de tecnologia começaram a liberar a integração direta de assistentes inteligentes em aplicativos de conversa diária para gerenciamento de agenda pessoal.</p>
-                        <p>Com comandos simples de áudio ou texto, o assistente organiza compromissos, faz resumos de e-mails longos e sugere respostas rápidas.</p>
-                        <p><strong>Impacto na Rotina:</strong> Ganho direto de produtividade pessoal no uso do celular sem necessidade de aplicativos pagos adicionais.</p>`
-            },
-            {
-                id: 7,
-                dataPub: "2026-03-27",
-                t: "Smart TVs atualizam protocolos de privacidade e segurança",
-                f: "Wired (EUA)",
-                cat: "Tech no Cotidiano",
-                img: "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=600&q=80",
-                texto: `<p>Fabricantes mundiais de televisores inteligentes lançaram correções de sistema para bloquear tentativas de coleta indevida de dados por aplicativos de terceiros.</p>
-                        <p>A atualização garante maior proteção contra vazamento de informações de rede doméstica do usuário.</p>
-                        <p><strong>Impacto na Rotina:</strong> Ambientes residenciais conectados ficam mais seguros contra vulnerabilidades da internet.</p>`
-            },
-            {
-                id: 8,
-                dataPub: "2026-03-27",
-                t: "Ferramentas de IA para controle de tela avançam para famílias",
-                f: "The Verge (EUA)",
-                cat: "Tech no Cotidiano",
-                img: bgFallback,
-                texto: `<p>Plataformas de tecnologia apresentaram novos filtros inteligentes que analisam contextos de uso da internet por crianças em tempo real.</p>
-                        <p>A ferramenta avisa os pais sobre padrões de uso nocivos e excesso de exposição de tela de maneira preventiva e educativa.</p>
-                        <p><strong>Impacto na Rotina:</strong> Gestão familiar de tecnologia mais eficiente e tranquila para os pais.</p>`
             }
         ];
+        // <!--FIM_NOTICIAS-->
 
         function limitarTexto(texto, limite = 60) {
             return texto.length > limite ? texto.substring(0, limite - 3) + "..." : texto;
