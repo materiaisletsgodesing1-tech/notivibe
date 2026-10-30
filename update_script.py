@@ -43,19 +43,26 @@ def gerar_imagem_tematica(titulo, categoria):
     else:
         termo = "modern technology business" if categoria == "Tech nos Negócios" else "digital lifestyle technology"
 
-    return f"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
+    return "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
 
 def buscar_noticias():
     noticias = []
     id_counter = 1
-    agora = datetime.now()
-    limite_3_dias = agora - timedelta(days=3)
 
     for categoria, url_feed in FEEDS.items():
         parsed = feedparser.parse(url_feed)
+        
+        # Pega as matérias disponíveis no feed e ordena das mais recentes para as mais antigas
+        entries = sorted(
+            parsed.entries,
+            key=lambda x: getattr(x, 'published_parsed', datetime.now().timetuple()),
+            reverse=True
+        )
+
         itens_adicionados = 0
 
-        for entry in parsed.entries:
+        # Preenche até completar EXATAMENTE 4 notícias por categoria
+        for entry in entries:
             if itens_adicionados >= 4:
                 break
 
@@ -63,25 +70,24 @@ def buscar_noticias():
             if hasattr(entry, 'published_parsed') and entry.published_parsed:
                 dt_pub = datetime(*entry.published_parsed[:6])
 
-            if dt_pub >= limite_3_dias:
-                titulo_pt = traduzir_texto(entry.title)
-                resumo_limpo = limpar_html(getattr(entry, 'summary', getattr(entry, 'description', '')))
-                resumo_pt = traduzir_texto(resumo_limpo[:200])
+            titulo_pt = traduzir_texto(entry.title)
+            resumo_limpo = limpar_html(getattr(entry, 'summary', getattr(entry, 'description', '')))
+            resumo_pt = traduzir_texto(resumo_limpo[:200])
 
-                imagem_tematica = gerar_imagem_tematica(entry.title, categoria)
-                fonte = "TechCrunch (EUA)" if categoria == "Tech nos Negócios" else "The Verge (EUA)"
-                
-                noticias.append({
-                    "id": id_counter,
-                    "dataPub": dt_pub.strftime("%Y-%m-%d"),
-                    "t": titulo_pt,
-                    "f": fonte,
-                    "cat": categoria,
-                    "img": imagem_tematica,
-                    "texto": f"<p>{resumo_pt}</p><p><strong>Impacto:</strong> Atualização relevante dos últimos 3 dias no cenário global de inovação e inteligência artificial.</p>"
-                })
-                id_counter += 1
-                itens_adicionados += 1
+            imagem_tematica = gerar_imagem_tematica(entry.title, categoria)
+            fonte = "TechCrunch (EUA)" if categoria == "Tech nos Negócios" else "The Verge (EUA)"
+            
+            noticias.append({
+                "id": id_counter,
+                "dataPub": dt_pub.strftime("%Y-%m-%d"),
+                "t": titulo_pt,
+                "f": fonte,
+                "cat": categoria,
+                "img": imagem_tematica,
+                "texto": f"<p>{resumo_pt}</p><p><strong>Impacto:</strong> Atualização relevante no cenário global de inovação e inteligência artificial.</p>"
+            })
+            id_counter += 1
+            itens_adicionados += 1
 
     return noticias
 
@@ -93,14 +99,13 @@ def atualizar_html(noticias):
         json_noticias = json.dumps(noticias, ensure_ascii=False, indent=4)
         bloco_novo = f"// <!--INICIO_NOTICIAS-->\n        let todasNoticias = {json_noticias};\n        // <!--FIM_NOTICIAS-->"
 
-        # Substitui exatamente a variável todasNoticias entre os marcadores do index.html
         padrao = r'// <!--INICIO_NOTICIAS-->[\s\S]*?// <!--FIM_NOTICIAS-->'
         
         if re.search(padrao, conteudo):
             novo_conteudo = re.sub(padrao, bloco_novo, conteudo)
             with open("index.html", "w", encoding="utf-8") as f:
                 f.write(novo_conteudo)
-            print("Notícias injetadas com sucesso em 'todasNoticias' no index.html!")
+            print("Notícias injetadas com sucesso no index.html!")
         else:
             print("Marcadores não encontrados no index.html.")
 
